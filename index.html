@@ -1,7 +1,37 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>OAuth Redirect</title>
+    <script>
+        window.onload = function() {
+            // Získání kódu z URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            
+            if (code) {
+                // Odeslat kód zpět do aplikace (např. pomocí Fetch API)
+                fetch('https://your-server-endpoint.com/callback', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code: code }),
+                }).then(response => {
+                    // Zpracování odpovědi
+                    console.log('Authorization code sent to app:', code);
+                }).catch(error => {
+                    console.error('Error sending code to app:', error);
+                });
+
+                document.body.innerHTML = "Authorization code received! You can close this tab.";
+                setTimeout(() => { window.close(); }, 2000); // Zavření okna po 2 sekundách
+            } else {
+                document.body.innerHTML = "No authorization code received.";
+            }
+        }
+    </script>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <h1>OAuth Redirect</h1>
 </body>
 </html>
